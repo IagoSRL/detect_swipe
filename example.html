@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <title>Example use of Detect Swipe</title>
+    <main>
+        <h1>Example use of Detect Swipe</h1>
+        <p>Swipe over next gray area</p>
+        <div id="playground"></div>
+        <pre id="console">Log:</pre>
+    </main>
+    <style>
+        h1, p {
+            text-align: center;
+            font-family: sans-serif;
+        }
+        #playground {
+            background: gray;
+            width: 200px;
+            height: 200px;
+            margin: 30px auto;
+        }
+        #console {
+            background: #333333;
+            color: #cccccc;
+            display: block;
+            margin: 0 auto 30px;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="./jquery.detect_swipe.js"></script>
+    <script>
+        var $console = $('#console');
+        function log(text) {
+            $console.append('\n' + text);
+        }
+        $('#playground')
+        .on('swipe', function(e, dir) {
+            log('swipe     dir=' + dir);
+        })
+        .on('swipeleft', function() {
+            log('swipeleft');
+        })
+        .on('swiperight', function() {
+            log('swiperight');
+        })
+        .on('swipeup', function() {
+            log('swipeup');
+        })
+        .on('swipedown', function() {
+            log('swipedown');
+        });
+    </script>
+</html>
