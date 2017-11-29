@@ -72,10 +72,10 @@
   }
 
   function teardown() {
-    this.removeEventListener('touchstart', onTouchStart);
+    this.removeEventListener && this.removeEventListener('touchstart', onTouchStart);
   }
 
-  $.event.special.swipe = { setup: setup };
+  $.event.special.swipe = { setup: setup, teardown: teardown };
 
   $.each(['left', 'up', 'down', 'right'], function () {
     $.event.special['swipe' + this] = { setup: function(){
