@@ -80,10 +80,14 @@
   $.each(['left', 'up', 'down', 'right'], function (i, name) {
     $.event.special['swipe' + this] = {
       setup: function(){
-          $(this).on('swipe.internal' + name, $.noop);
+        // DEBUG: To try that 'teardown' and namespacing is working as expected,
+        // replace next `$.noop` by a `function(){ console.log('__debugging swipe__');}`
+        // and use example.html enabling swipeleft and disabling (events will
+        // continue to log the debug messages at console)
+        $(this).on('swipe.internal' + name, $.noop);
       },
       teardown: function() {
-          $(this).off('swipe.internal' + name);
+        $(this).off('swipe.internal' + name);
       }
   };
   });
