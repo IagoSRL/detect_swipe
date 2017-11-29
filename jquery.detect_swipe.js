@@ -77,9 +77,14 @@
 
   $.event.special.swipe = { setup: setup, teardown: teardown };
 
-  $.each(['left', 'up', 'down', 'right'], function () {
-    $.event.special['swipe' + this] = { setup: function(){
-      $(this).on('swipe', $.noop);
-    } };
+  $.each(['left', 'up', 'down', 'right'], function (i, name) {
+    $.event.special['swipe' + this] = {
+      setup: function(){
+          $(this).on('swipe.internal' + name, $.noop);
+      },
+      teardown: function() {
+          $(this).off('swipe.internal' + name);
+      }
+  };
   });
 }));
