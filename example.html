@@ -5,6 +5,13 @@
         <h1>Example use of Detect Swipe</h1>
         <p>Swipe over next gray area</p>
         <div id="playground"></div>
+        <div id="toolbar">
+            <button type="button" id="toggleSwipe"></button>
+            <button type="button" id="toggleLeft"></button>
+            <button type="button" id="toggleRight"></button>
+            <button type="button" id="toggleUp"></button>
+            <button type="button" id="toggleDown"></button>
+        </div>
         <pre id="console">Log:</pre>
     </main>
     <style>
@@ -17,6 +24,10 @@
             width: 200px;
             height: 200px;
             margin: 30px auto;
+        }
+        #toolbar {
+            text-align: center;
+            margin: 0 15px 20px;
         }
         #console {
             background: #333333;
@@ -32,21 +43,64 @@
         function log(text) {
             $console.append('\n' + text);
         }
-        $('#playground')
-        .on('swipe', function(e, dir) {
-            log('swipe     dir=' + dir);
-        })
-        .on('swipeleft', function() {
-            log('swipeleft');
-        })
-        .on('swiperight', function() {
-            log('swiperight');
-        })
-        .on('swipeup', function() {
-            log('swipeup');
-        })
-        .on('swipedown', function() {
-            log('swipedown');
+        var $playground = $('#playground');
+
+        var BUTTON_ENABLE = 'Enable ';
+        var BUTTON_DISABLE = 'Disable ';
+        /**
+         * Definitions and state of buttons
+         */
+        var buttons = [
+            {
+                id: 'toggleSwipe',
+                name: 'swipe',
+                label: 'swipe (any direction)',
+                enabled: false,
+                message: 'swipe     dir='
+            }, {
+                id: 'toggleLeft',
+                name: 'swipeleft',
+                enabled: false
+            }, {
+                id: 'toggleRight',
+                name: 'swiperight',
+                enabled: false
+            }, {
+                id: 'toggleUp',
+                name: 'swipeup',
+                enabled: false
+            }, {
+                id: 'toggleDown',
+                name: 'swipedown',
+                enabled: false
+            }
+        ];
+        var setLabel = function($button, button) {
+            if (button.enabled) {
+                $button.text(BUTTON_DISABLE + (button.label || button.name));
+            }
+            else {
+                $button.text(BUTTON_ENABLE + (button.label || button.name));
+            }
+        }
+        buttons.forEach(function(button) {
+            var $btn = $('#' + button.id);
+            // Initial label
+            setLabel($btn, button);
+            // Click handler to enable/disable swipes
+            $btn.on('click', function() {
+                if (button.enabled) {
+                    $playground.off(button.name + '.toggleButton');
+                }
+                else {
+                    $playground.on(button.name + '.toggleButton', function(e, dir) {
+                        var msg = button.message ? (button.message + (dir || '')) : button.name;
+                        log(msg);
+                    });
+                }
+                button.enabled = !button.enabled;
+                setLabel($btn, button);
+            });
         });
     </script>
 </html>
